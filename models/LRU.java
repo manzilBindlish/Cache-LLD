@@ -1,40 +1,45 @@
 package models;
+
 import java.util.*;
 import models.*;
 
-public class LRU implements IStratergy {
-    HashMap<Integer,Node> nodeAddress;
-    LinkedList list; 
-    Node end;
+public class LRU<Key> implements IStrategy<Key> {
+    HashMap<Key, Node> nodeAddress;
+    LinkedList list;
 
-
-
-    public void removeElement(){
-        Node delElement = nodeAddress.get(end.data);
-        list.removeElement(delElement);
-        nodeAddress.remove(end.data);
-        end = end.prev;
+    public LRU() {
+        this.nodeAddress = new HashMap<>();
+        this.list = new LinkedList();
     }
 
-    public void removeElement(int key){
-        Node delElement = nodeAddress.get(key);
-        list.removeElement(delElement);
-        nodeAddress.remove(end.data);
-        end = end.prev;
+    public void addElement(Key data) {
+        Node newInsertion = this.list.insertKeyAtEnd(data);
+        this.nodeAddress.put(data, newInsertion);
     }
 
-    public void addElement(int data){
-        Node newInsertion = list.insert(data);
-        nodeAddress.put(data, newInsertion);
-        end = newInsertion;
+    public Key removeElement() {
+        if (this.list.head != null) {
+            this.nodeAddress.remove(this.list.head.data);
+            Key delKey = (Key) this.list.head.data;
+            this.list.removeFirstNode();
+            System.out.println("Eviction policy invoked and delted key is " + delKey);
+            return delKey;
+        } else {
+            throw new RuntimeException("");
+        }
 
     }
 
-    // public void getData(int data){
-        
-    // }
+    public void removeElement(Key key) {
+        Node delElement = this.nodeAddress.get(key);
+        this.list.removeNode(delElement);
+        this.nodeAddress.remove(key);
+    }
 
+    public void fetchData(Key key) {
+        Node activeNode = this.nodeAddress.get(key);
+        this.list.removeNode(activeNode);
+        this.list.insertNodeAtEnd(activeNode);
+    }
 
-
-   
 }

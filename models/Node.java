@@ -1,28 +1,26 @@
 package models;
 
-public class Node {
+public class Node<Key> {
 
-  
-    int data;
+    Key data;
     Node prev;
     Node next;
 
-    Node(){
+    Node() {
         this.prev = null;
         this.next = null;
     }
 
-    Node(int data){
+    Node(Key data) {
         this.data = data;
         this.prev = null;
         this.next = null;
     }
 
-    Node(int data, Node prev){
+    Node(Key data, Node prev) {
         this.data = data;
         this.prev = prev;
         this.next = null;
     }
 
-    
 }
